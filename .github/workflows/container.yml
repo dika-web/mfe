@@ -9,7 +9,7 @@ on:
 
 defaults: 
   run: 
-    workflow-directory: packages/container
+    working-directory: packages/container
 
 jobs: 
   build: 
