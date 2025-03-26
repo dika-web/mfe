@@ -3,6 +3,16 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const commonConfig = require('./webpack.common');
 const packageJson = require('../package.json');
 
+const getRemotes = async () => {
+    if (!process.env.PRODUCTION_DOMAIN) return {};
+    return {
+      marketing: `marketing@${process.env.PRODUCTION_DOMAIN}/marketing/latest/remoteEntry.js`,
+    };
+  };
+  
+const remotes = await getRemotes();
+
+
 const prodConfig = {
     mode: 'production', 
     output: {
@@ -12,11 +22,7 @@ const prodConfig = {
     plugins: [
         new ModuleFederationPlugin({
             name: 'container',
-            remotes: {
-                ...(process.env.PRODUCTION_DOMAIN && {
-                    marketing: `marketing@${process.env.PRODUCTION_DOMAIN}/marketing/latest/remoteEntry.js`,
-                  }),
-            },
+            ...remotes,
             shared: packageJson.dependencies
         })
     ]
