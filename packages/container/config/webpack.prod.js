@@ -4,6 +4,11 @@ const commonConfig = require('./webpack.common');
 const packageJson = require('../package.json');
 const domain = process.env.PRODUCTION_DOMAIN;
 
+console.log('🚀 PRODUCTION_DOMAIN:', process.env.PRODUCTION_DOMAIN);
+console.log('🚀 PRODUCTION_DOMAIN:', domain);
+
+
+
 
 const prodConfig = {
     mode: 'production', 
@@ -23,3 +28,5 @@ const prodConfig = {
 }
 
 module.exports = merge(commonConfig, prodConfig)
+
+
