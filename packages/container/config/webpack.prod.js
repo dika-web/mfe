@@ -2,14 +2,7 @@ const { merge } = require('webpack-merge');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 const commonConfig = require('./webpack.common');
 const packageJson = require('../package.json');
-
-const getRemotes = async () => {
-    if (!process.env.PRODUCTION_DOMAIN) return {};
-    return {
-      marketing: `marketing@${process.env.PRODUCTION_DOMAIN}/marketing/latest/remoteEntry.js`,
-    };
-  };
-  
+const domain = process.env.PRODUCTION_DOMAIN || 'https://dvqd9jqo4ull0.cloudfront.net'
 
 module.exports = async () => {
     const remotes = await getRemotes();
@@ -23,7 +16,9 @@ module.exports = async () => {
       plugins: [
         new ModuleFederationPlugin({
           name: 'container',
-          remotes,
+          remotes : {
+            marketing: `marketing@${domain}/marketing/latest/remoteEntry.js`,
+          },
           shared: packageJson.dependencies,
         }),
       ],
