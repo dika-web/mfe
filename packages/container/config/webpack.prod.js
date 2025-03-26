@@ -10,24 +10,26 @@ const getRemotes = async () => {
     };
   };
   
-const remotes = await getRemotes();
 
+module.exports = async () => {
+    const remotes = await getRemotes();
 
-const prodConfig = {
-    mode: 'production', 
-    output: {
-        filename:'[name].[contenthash].js',
+    const prodConfig = {
+      mode: 'production',
+      output: {
+        filename: '[name].[contenthash].js',
         publicPath: '/container/latest/',
-    }, 
-    plugins: [
+      },
+      plugins: [
         new ModuleFederationPlugin({
-            name: 'container',
-            ...remotes,
-            shared: packageJson.dependencies
-        })
-    ]
-}
-
-module.exports = merge(commonConfig, prodConfig)
+          name: 'container',
+          remotes,
+          shared: packageJson.dependencies,
+        }),
+      ],
+    };
+  
+    return merge(commonConfig, prodConfig);
+  };
 
 
